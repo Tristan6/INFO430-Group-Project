@@ -50,3 +50,22 @@ ExpirationDate DATE NULL,
 QuadrantID INTEGER FOREIGN KEY REFERENCES tblQuadrant (QuadrantID) NOT NULL,
 ItemTypeID INTEGER FOREIGN KEY REFERENCES tblItemType (ItemTypeID) NOT NULL)
 GO
+
+CREATE TABLE tblItemType
+(ItemTypeID INTEGER IDENTITY(1,1) primary key,
+Name varchar(50) not null,
+Description varchar(500) NULL)
+GO
+
+CREATE TABLE tblFloor
+(FloorID INTEGER IDENTITY(1,1) primary key,
+Name varchar(50) not null,
+HouseID int FOREIGN KEY REFERENCES tblHouse(HouseID))
+GO
+
+CREATE TABLE tblRooms
+(RoomID INTEGER IDENTITY(1,1) primary key,
+Name varchar(50) not null,
+RoomTypeID int FOREIGN KEY REFERENCES tblRoomType(RoomTypeID),
+FloorID int FOREIGN KEY REFERENCES tblFloor(FloorID))
+GO
