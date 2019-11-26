@@ -1,5 +1,12 @@
 use [Group3-Final]
 
+CREATE TABLE tblRoom
+(RoomID INTEGER IDENTITY(1,1) primary key,
+RoomName varchar(50) not null,
+RoomTypeID int FOREIGN KEY REFERENCES tblRoomType(RoomTypeID),
+FloorID int FOREIGN KEY REFERENCES tblFloor(FloorID))
+GO
+
 CREATE TABLE tblRoomType
 (RoomTypeID INTEGER IDENTITY(1,1) primary key,
 RoomTypeName varchar(50) NOT NULL,
@@ -13,6 +20,12 @@ FirstName varchar(50) NOT NULL,
 LastName varchar(50) NOT NULL,
 Email varchar(500) NOT NULL,
 PassHash varchar(500) NOT NULL)
+GO
+
+CREATE TABLE tblFloor
+(FloorID INTEGER IDENTITY(1,1) primary key,
+FloorName varchar(50) not null,
+HouseID int FOREIGN KEY REFERENCES tblHouse(HouseID))
 GO
 
 -- This represents a settlement
@@ -35,7 +48,7 @@ GO
 CREATE TABLE tblQuadrant
 (QuadrantID INT IDENTITY(1,1) primary key NOT NULL,
 QuadrantName varchar(50) NOT NULL,
-RoomID INTEGER FOREIGN KEY REFERENCES tblRooms (RoomID) NOT NULL)
+RoomID INTEGER FOREIGN KEY REFERENCES tblRoom (RoomID) NOT NULL)
 GO
 
 -- This represents a settlement
@@ -53,19 +66,6 @@ GO
 
 CREATE TABLE tblItemType
 (ItemTypeID INTEGER IDENTITY(1,1) primary key,
-Name varchar(50) not null,
+ItemTypeName varchar(50) not null,
 Description varchar(500) NULL)
-GO
-
-CREATE TABLE tblFloor
-(FloorID INTEGER IDENTITY(1,1) primary key,
-Name varchar(50) not null,
-HouseID int FOREIGN KEY REFERENCES tblHouse(HouseID))
-GO
-
-CREATE TABLE tblRooms
-(RoomID INTEGER IDENTITY(1,1) primary key,
-Name varchar(50) not null,
-RoomTypeID int FOREIGN KEY REFERENCES tblRoomType(RoomTypeID),
-FloorID int FOREIGN KEY REFERENCES tblFloor(FloorID))
 GO
