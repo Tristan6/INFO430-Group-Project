@@ -67,5 +67,5 @@ GO
 CREATE TABLE tblItemType
 (ItemTypeID INTEGER IDENTITY(1,1) primary key,
 ItemTypeName varchar(50) not null,
-Description varchar(500) NULL)
+ItemTypeDescription varchar(500) NULL)
 GO
