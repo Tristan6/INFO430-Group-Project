@@ -1,16 +1,30 @@
 use [Group3-Final]
 
-CREATE TABLE tblRoom
-(RoomID INTEGER IDENTITY(1,1) primary key,
-RoomName varchar(50) not null,
-RoomTypeID int FOREIGN KEY REFERENCES tblRoomType(RoomTypeID),
-FloorID int FOREIGN KEY REFERENCES tblFloor(FloorID))
+/*
+DROP ORDER (REVERSE For add order)
+
+tblItem
+tblItemType
+tblQuadrant
+tblRoom
+tblRoomType
+tblHouseGroup
+tblUser
+tblFloor
+tblHouse
+*/
+
+-- This represents a settlement
+CREATE TABLE tblHouse
+(HouseID INT IDENTITY(1,1) primary key NOT NULL,
+HouseName varchar(50) NOT NULL,
+HouseDescr varchar(500) NULL)
 GO
 
-CREATE TABLE tblRoomType
-(RoomTypeID INTEGER IDENTITY(1,1) primary key,
-RoomTypeName varchar(50) NOT NULL,
-RoomTypeDescr varchar(500) NULL)
+CREATE TABLE tblFloor
+(FloorID INTEGER IDENTITY(1,1) primary key,
+FloorName varchar(50) not null,
+HouseID int FOREIGN KEY REFERENCES tblHouse(HouseID))
 GO
 
 -- This represents a user account
@@ -22,19 +36,6 @@ Email varchar(500) NOT NULL,
 PassHash varchar(500) NOT NULL)
 GO
 
-CREATE TABLE tblFloor
-(FloorID INTEGER IDENTITY(1,1) primary key,
-FloorName varchar(50) not null,
-HouseID int FOREIGN KEY REFERENCES tblHouse(HouseID))
-GO
-
--- This represents a settlement
-CREATE TABLE tblHouse
-(HouseID INT IDENTITY(1,1) primary key NOT NULL,
-HouseName varchar(50) NOT NULL,
-HouseDescr varchar(500) NULL)
-GO
-
 -- This represents an association with a specific settlement since you 
 -- may have multiple people in one settlement, or live between multiple 
 -- settlements
@@ -44,11 +45,30 @@ UserID INTEGER FOREIGN KEY REFERENCES tblUser (UserID) NOT NULL,
 HouseID INTEGER FOREIGN KEY REFERENCES tblHouse (HouseID) NOT NULL)
 GO
 
+CREATE TABLE tblRoomType
+(RoomTypeID INTEGER IDENTITY(1,1) primary key,
+RoomTypeName varchar(50) NOT NULL,
+RoomTypeDescr varchar(500) NULL)
+GO
+
+CREATE TABLE tblRoom
+(RoomID INTEGER IDENTITY(1,1) primary key,
+RoomName varchar(50) not null,
+RoomTypeID int FOREIGN KEY REFERENCES tblRoomType(RoomTypeID),
+FloorID int FOREIGN KEY REFERENCES tblFloor(FloorID))
+GO
+
 -- This represents a settlement
 CREATE TABLE tblQuadrant
 (QuadrantID INT IDENTITY(1,1) primary key NOT NULL,
 QuadrantName varchar(50) NOT NULL,
 RoomID INTEGER FOREIGN KEY REFERENCES tblRoom (RoomID) NOT NULL)
+GO
+
+CREATE TABLE tblItemType
+(ItemTypeID INTEGER IDENTITY(1,1) primary key,
+ItemTypeName varchar(50) not null,
+ItemTypeDescription varchar(500) NULL)
 GO
 
 -- This represents a settlement
@@ -62,10 +82,4 @@ PurchaseDate DATE NULL,
 ExpirationDate DATE NULL,
 QuadrantID INTEGER FOREIGN KEY REFERENCES tblQuadrant (QuadrantID) NOT NULL,
 ItemTypeID INTEGER FOREIGN KEY REFERENCES tblItemType (ItemTypeID) NOT NULL)
-GO
-
-CREATE TABLE tblItemType
-(ItemTypeID INTEGER IDENTITY(1,1) primary key,
-ItemTypeName varchar(50) not null,
-ItemTypeDescription varchar(500) NULL)
 GO
