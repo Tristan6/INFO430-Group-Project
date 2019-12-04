@@ -1,23 +1,6 @@
 use [Group3-Final]
 GO
 
-CREATE PROCEDURE insert_Floor
-@Name varchar(50),
-@HouseName varchar(50)
-
-AS
-
-DECLARE @H_ID INT
-
-SET @H_ID = (SELECT H.HouseID
-			 FROM tblHouse H
-			 WHERE H.HouseName = @HouseName)
-
-INSERT INTO tblFloor (FloorName, HouseID)
-VALUES(@Name, @H_ID)
-
-GO
-
 CREATE PROCEDURE insert_House
 @Name varchar(50),
 @Description varchar(500)
@@ -30,12 +13,10 @@ VALUES(@Name, @Description)
 GO
 
 CREATE PROCEDURE insert_HouseGroup
-@Name varchar(50),
 @FirstName varchar(50),
 @LastName varchar(50),
 @Email varchar(500),
-@HouseName varchar(50),
-@HouseDescription varchar(500)
+@HouseName varchar(50)
 
 AS
 
@@ -50,8 +31,7 @@ SET @U_ID = (SELECT U.UserID
 
 SET @H_ID = (SELECT H.HouseID 
 			 FROM tblHouse H 
-			 WHERE H.HouseName = @HouseName AND 
-				   H.HouseDescr = @HouseDescription)
+			 WHERE H.HouseName = @HouseName)
 
 INSERT INTO tblHouseGroup(UserID, HouseID)
 VALUES (@U_ID, @H_ID)
@@ -66,14 +46,19 @@ CREATE PROCEDURE insert_Item
 @PurchaseDate DATE,
 @ExpirationDate DATE,
 @QuadrantName varchar(50),
-@ItemTypeName varchar(50)
+@ItemTypeName varchar(50),
+@RoomName varchar(50)
 
 AS
 
+DECLARE @R_ID INT
 DECLARE @Q_ID INT
 DECLARE @IT_ID INT
 
-SET @Q_ID = (SELECT Q.QuadrantID FROM tblQuadrant Q WHERE Q.QuadrantName = @QuadrantName)
+SET @R_ID = (SELECT R.RoomID FROM tblRoom R WHERE R.RoomName = @RoomName)
+SET @Q_ID = (SELECT Q.QuadrantID 
+			 FROM tblQuadrant Q 
+			 WHERE Q.QuadrantName = @QuadrantName AND Q.RoomID = @R_ID)
 SET @IT_ID = (SELECT IT.ItemTypeID FROM tblItemType IT WHERE IT.ItemTypeName = @ItemTypeName)
 
 INSERT INTO tblItem(ItemName, ImgSrc, LocationDescription, Condition, 
@@ -112,22 +97,19 @@ GO
 
 CREATE PROCEDURE insert_Room
 @Name varchar(50),
-@FloorName varchar(50),
 @HouseName varchar(50),
 @RoomTypeName varchar(50)
 
 AS
 
 DECLARE @H_ID INT
-DECLARE @F_ID INT
 DECLARE @RT_ID INT
 
 SET @H_ID = (SELECT H.HouseID FROM tblHouse H WHERE H.HouseName = @HouseName)
-SET @F_ID = (SELECT F.FloorID FROM tblFloor F WHERE F.FloorName = @FloorName AND F.HouseID = @H_ID)
 SET @RT_ID = (SELECT RT.RoomTypeID FROM tblRoomType RT WHERE RT.RoomTypeName = @RoomTypeName)
 
-INSERT INTO tblRoom (RoomName,FloorID, RoomTypeID)
-VALUES(@Name, @F_ID, @RT_ID)
+INSERT INTO tblRoom (RoomName,HouseID, RoomTypeID)
+VALUES(@Name, @H_ID, @RT_ID)
 GO
 
 CREATE PROCEDURE insert_RoomType

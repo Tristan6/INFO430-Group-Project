@@ -1,4 +1,5 @@
 use [Group3-Final]
+GO
 
 /*
 DROP ORDER (REVERSE For add order)
@@ -49,7 +50,7 @@ CREATE TABLE tblRoom
 (RoomID INTEGER IDENTITY(1,1) primary key,
 RoomName varchar(50) not null,
 RoomTypeID int FOREIGN KEY REFERENCES tblRoomType(RoomTypeID),
-FloorID int FOREIGN KEY REFERENCES tblFloor(FloorID))
+HouseID int FOREIGN KEY REFERENCES tblHouse(HouseID))
 GO
 
 -- This represents a settlement
