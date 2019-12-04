@@ -29,7 +29,6 @@ VALUES(@Name, @Description)
 
 GO
 
-
 CREATE PROCEDURE insert_HouseGroup
 @Name varchar(50),
 @FirstName varchar(50),
@@ -114,14 +113,17 @@ GO
 CREATE PROCEDURE insert_Room
 @Name varchar(50),
 @FloorName varchar(50),
+@HouseName varchar(50),
 @RoomTypeName varchar(50)
 
 AS
 
+DECLARE @H_ID INT
 DECLARE @F_ID INT
 DECLARE @RT_ID INT
 
-SET @F_ID = (SELECT F.FloorID FROM tblFloor F WHERE F.FloorName = @FloorName)
+SET @H_ID = (SELECT H.HouseID FROM tblHouse H WHERE H.HouseName = @HouseName)
+SET @F_ID = (SELECT F.FloorID FROM tblFloor F WHERE F.FloorName = @FloorName AND F.HouseID = @H_ID)
 SET @RT_ID = (SELECT RT.RoomTypeID FROM tblRoomType RT WHERE RT.RoomTypeName = @RoomTypeName)
 
 INSERT INTO tblRoom (RoomName,FloorID, RoomTypeID)
