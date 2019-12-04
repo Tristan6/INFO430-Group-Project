@@ -21,12 +21,6 @@ HouseName varchar(50) NOT NULL,
 HouseDescr varchar(500) NULL)
 GO
 
-CREATE TABLE tblFloor
-(FloorID INTEGER IDENTITY(1,1) primary key,
-FloorName varchar(50) not null,
-HouseID int FOREIGN KEY REFERENCES tblHouse(HouseID))
-GO
-
 -- This represents a user account
 CREATE TABLE tblUser
 (UserID INTEGER IDENTITY(1,1) primary key,
